@@ -1,36 +1,75 @@
 /**
  * Created by w44 on 15-1-7.
  */
-
 var net = require('net');
 
+var util = require('print_util');
+var dataUtil = util.dataUtil;
 
+var cons=require('print_constants');
+var msgParam=cons.msgParam;
 
 var HOST = '127.0.0.1';
 var PORT = 6969;
 
-// 创建一个TCP服务器实例，调用listen函数开始监听指定端口
-// 传入net.createServer()的回调函数将作为”connection“事件的处理函数
-// 在每一个“connection”事件中，该回调函数接收到的socket对象是唯一的
-net.createServer(function(sock) {
 
-    // 我们获得一个连接 - 该连接自动关联一个socket对象
-    console.log('CONNECTED: ' +
-        sock.remoteAddress + ':' + sock.remotePort);
+net.createServer(function (sock) {
 
-    // 为这个socket实例添加一个"data"事件处理函数
-    sock.on('data', function(data) {
-        console.log('DATA ' + sock.remoteAddress + ': ' + data);
+    //此socket唯一
+    var remoteAddress = sock.remoteAddress;
+    var remotePort = sock.remotePort;
+    var dataBuf = new Buffer(50 * 1024);
+    //数据包长度固定
+    var packageBufLen = msgParam.packageBufLen;
+    //当前包长
+    var curBufLen = 0;
+    //数据类长度
+    var dataBufLen = 0;
+    //接收客户端信息
+    console.log('有客户端接入：' + remoteAddress + ' ' + remotePort);
+    sock.on('data', function (data) {
+
+        //聚合数据流
+        data.copy(dataBuf, curBufLen, 0, data.length);
+        //记录当前接收长度
+        curBufLen += data.length;
+        //第一步
+        //判断是否可以获取包长
+        if (curBufLen >= packageBufLen) {
+            //读取数据长度
+            dataBufLen = dataBuf.readInt32BE(0, packageBufLen);
+        }else{
+            return;
+        }
+        if(dataBufLen>0){
+
+        }
+        //第二步
+        //判断整个包是否已经获取完全(当前长度>=数据长度+包长信息)
+        if (curBufLen >= dataBufLen + packageBufLen) {
+             var headNode=dataUtil.parse(dataBuf);
+             console.log(JSON.stringify(headNode));
+
+        }else{
+            return;
+        }
         // 回发该数据，客户端将收到来自服务端的数据
+
         sock.write('You said "' + data + '"');
     });
 
     // 为这个socket实例添加一个"close"事件处理函数
-    sock.on('close', function(data) {
+    sock.on('close', function (data) {
         console.log('CLOSED: ' +
-            sock.remoteAddress + ' ' + sock.remotePort);
+              remoteAddress + ' ' + remotePort);
     });
+
+    sock.on('error', function () {
+        console.log('ERROE: ' +
+              remoteAddress + ' ' + remotePort);
+    })
+
 
 }).listen(PORT, HOST);
 
-console.log('Server listening on ' + HOST +':'+ PORT);
+console.log('Server listening on ' + HOST + ':' + PORT);
