@@ -9,6 +9,9 @@ var dataUtil = util.dataUtil;
 var cons = require('print_constants');
 var msgParam = cons.msgParam;
 
+
+var TerminalControl = require('print_control').terminalControl;
+
 var HOST = '127.0.0.1';
 var PORT = 6969;
 
@@ -19,6 +22,7 @@ net.createServer(function (sock) {
     var remoteAddress = sock.remoteAddress;
     var remotePort = sock.remotePort;
     var dataBuf = new Buffer(50 * 1024);
+    var terminalControl = new TerminalControl(sock);
     //数据包长度固定
     var packageBufLen = msgParam.packageBufLen;
     //当前包长
@@ -33,7 +37,6 @@ net.createServer(function (sock) {
         data.copy(dataBuf, curBufLen, 0, data.length);
         //记录当前接收长度
         curBufLen += data.length;
-
         //第一步
         //判断是否可以获取包长
         if (curBufLen >= packageBufLen) {
@@ -46,15 +49,18 @@ net.createServer(function (sock) {
         //第二步
         //判断整个包是否已经获取完全(当前长度>=数据长度+包长信息)
         while (curBufLen >= dataBufLen + packageBufLen) {
-            var headNode = dataUtil.parse(dataBuf);
+            //解析headNode
+            var headNode = dataUtil.parseHeadNode(dataBuf);
             //如果头报文解析出错，重新试着接包
             if (headNode == null) {
                 curBufLen = 0;
             } else {
-                var bodyNodeBuf = new Buffer(curBufLen - msgParam.headBufLen);
+                var bodyNodeBuf = new Buffer(dataBufLen+packageBufLen - msgParam.headBufLen);
                 dataBuf.copy(bodyNodeBuf, 0, msgParam.headBufLen, dataBufLen);
+                //解析bodyNode
+                var bodyNode = dataUtil.handleForBodyNode(headNode,bodyNodeBuf);
                 //可以分流处理不同接口了
-                console.log(JSON.stringify(headNode));
+                terminalControl.handle(headNode,bodyNode);
                 //处理完成后，如果对方一次性将多个命令报文一起发过来的处理
                 if (curBufLen > dataBufLen + packageBufLen) {
                     console.log('本次有多余的字节需要处理');
@@ -65,7 +71,6 @@ net.createServer(function (sock) {
                     dataBuf.fill();
                     //将暂存的字符移动到数据流
                     othersBuf.copy(dataBuf, 0, 0, othersBufLen);
-                    console.log('内容：' + dataBuf.readInt32BE(0, 4));
                     curBufLen = othersBufLen;
                     dataBufLen = 0;
                     if (curBufLen >= packageBufLen) {
