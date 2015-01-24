@@ -10,7 +10,6 @@ var socketServer = require('./SocketServer.js');
 var WebServer = function(){
 };
 
-
 WebServer.prototype.start=function(){
 
 //设置视图
@@ -31,6 +30,10 @@ WebServer.prototype.start=function(){
 
     app.get('/', function (req, res) {
         res.render('index', { title: 'Hey', message: 'Hello there!'});
+    });
+
+    app.get('/app/index.html', function (req, res) {
+        res.render('app/index', { title: 'Hey', message: 'Hello there!'});
     });
 
     var server = app.listen(3000, function() {

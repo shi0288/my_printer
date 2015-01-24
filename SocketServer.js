@@ -6,16 +6,16 @@ var io = require('socket.io')();
 var control = require('print_control');
 var SocketControl =control.socketControl;
 var SocketServer = function(){
-    var self = this;
 };
 
 
 io.on('connection', function (socket) {
     console.log(socket.id+'进入');
-
+    socket.emit('this','active');
     var socketControl = new SocketControl(io,socket);
     socketControl.init();
     socket.on('disconnect',function(){
+        console.log('this',this.id+'走了');
         socket.broadcast.emit('this',this.id+'走了');
     });
 
