@@ -1,5 +1,5 @@
 doctype html
-html(lang="en" class="no-js"  ng-app="printerApp")
+html(lang="en" class="no-js"  ng-app="printerApp" ng-init=ngUserName  )
     head
         include ../includes/css.jade
         include ../includes/script.jade
@@ -7,7 +7,7 @@ html(lang="en" class="no-js"  ng-app="printerApp")
         include ../includes/socket.jade
         title 出票管理系统
     body(ng-controller="mainCtrl")
-        button(ng-click='send()') 点击
+        button(ng-click='catchTicketsStatus()') {{status}}
         .navbar.navbar-fixed-top
             .navbar-inner
                 .container-fluid
@@ -15,16 +15,17 @@ html(lang="en" class="no-js"  ng-app="printerApp")
                     .nav-collapse.collapse
                         ul.nav.pull-right
                             li.dropdown
-                                a(href='#' role='button' class='dropdown-toggle' data-toggle='dropdown')
+                                a(href='javascript:void(0)' role='button' class='dropdown-toggle' data-toggle='dropdown')
                                     i.icon-user
-                                    span Admin
+                                    span &nbsp&nbsp&nbsp
+                                    span=userName
                                     i.caret
                                  ul.dropdown-menu
                                      li
                                          a(tabindex="-1" href="#") 个人设置
                                      li.divider
                                      li
-                                         a(tabindex="-1" href="login.html") 退出
+                                         a(tabindex="-1" href="/") 退出
                         ul.nav
                             li.active
                                 a(href='#') 系统监控
