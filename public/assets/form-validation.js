@@ -26,21 +26,13 @@ var FormValidation = function () {
                     minlength: 2,
                     required: true
                 },
-                rePassWord: {
+                terminalCode: {
                     minlength: 2,
                     required: true
                 },
-                email: {
-                    required: true,
-                    email: true
-                },
-                url: {
-                    required: true,
-                    url: true
-                },
-                number: {
-                    required: true,
-                    number: true
+                gameCode: {
+                    minlength: 2,
+                    required: true
                 },
                 digits: {
                     required: true,
@@ -82,17 +74,40 @@ var FormValidation = function () {
                 var data = {};
                 data.cmd = form.attributes['action'].value;
                 var bodyNode = {};
-                bodyNode.userName = form.userName.value;
-                bodyNode.passWord = form.passWord.value;
                 data.bodyNode = bodyNode;
                 var elements = form.getElementsByTagName('input');
                 var tempLength = elements.length;
                 for(var i = 0;i<tempLength;i++)
                 {
-                    bodyNode[elements[i].name] = elements[i].value;
+                    if(elements[i].name==''){
+                    }else{
+                        if(elements[i].name=='gameCode'){
+                            bodyNode.gameCode = {};
+                            var game = {
+                                'T01': '大乐透',
+                                'T02': '七星彩',
+                                'T03': '排列3',
+                                'T04': '排列5',
+                                'T05': '11选5',
+                                'T06': '快赢481',
+                                'T51': '竞彩',
+                                'T53': '胜负彩',
+                                'T54': '四场进球',
+                                'T55': '六场半全场'
+                            };
+                            var arr = elements[i].value.split(',');
+                            for (var j = 0; j < arr.length; j++) {
+                                console.log(arr[j]);
+                                console.log(game[arr[j]]);
+                                bodyNode.gameCode[arr[j]] = game[arr[j]];
+                            };
+                        }else{
+                            bodyNode[elements[i].name] = elements[i].value;
+                        }
+                    }
                 }
                 socket.emit('data',data);
-                $("#addUser").modal('hide');
+                $("#"+data.cmd).modal('hide');
             }
         });
     }

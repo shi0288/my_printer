@@ -4,32 +4,113 @@
         <div class="navbar navbar-inner block-header">
             <div class="muted pull-left">终端机列表</div>
         </div>
-
         <div class="block-content collapse in">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>终端机编号</th>
-                    <th>终端机名称</th>
-                    <th>额度</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>11089</td>
-                    <td>福彩机器</td>
-                    <td>579</td>
-                    <td>管理游戏</td>
-                </tr>
-                <tr>
-                    <td>11090</td>
-                    <td>体彩机器</td>
-                    <td>23</td>
-                    <td>管理游戏</td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="span12">
+                <div class="table-toolbar">
+                    <div class="btn-group">
+                        <a href='javascript:void(0)'><botton  class='btn btn-success' data-toggle="modal" data-target="#addTerminal">创建<i class="icon-plus icon-white"></i></botton></a>
+                    </div>
+                    <div class="btn-group pull-right">
+                        <button data-toggle="dropdown" class="btn dropdown-toggle">Tools <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Print</a></li>
+                            <li><a href="#">Save as PDF</a></li>
+                            <li><a href="#">Export to Excel</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>终端机名称</th>
+                        <th>终端机编号</th>
+                        <th>游戏种类</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="terminal in terminals">
+                        <td>{{terminal.name}}</td>
+                        <td>{{terminal.terminalCode}}</td>
+                        <td>管理游戏</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /block -->
+</div>
+
+<div id="addTerminal" class="modal fade" tabindex='-1'role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+    <div class="modal-dialog">
+        <div class="modal-header">
+            <button class="close" type='button' data-dismiss='modal'>
+                <span aria-hidden='true'> × </span>
+                <span class="sr-only">Close</span>
+            </button>
+            <h4 id="myModalLabel" class="modal-title">创建终端机</h4>
+        </div>
+        <div class="modal-body">
+            <form action="addTerminal" id="form_sample_1" class="form-horizontal">
+                <fieldset>
+                    <div class="alert alert-error hide">
+                        <button class="close" data-dismiss="alert"></button>
+                        请确认所填项是否正确
+                    </div>
+                    <div class="alert alert-success hide">
+                        <button class="close" data-dismiss="alert"></button>
+                        Your form validation is successful!
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">终端机名称<span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="text" name="name" data-required="1" class="span6 m-wrap"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">终端机编号<span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="text" name="terminalCode" data-required="1" class="span6 m-wrap"/>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label">游戏种类<span class="required">*</span></label>
+                        <div class="controls">
+                            <input type="text" name="gameCode" data-required="1" class="span6 m-wrap"/>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">确认提交</button>
+                        <button type="button" class="btn"  data-dismiss='modal'>Cancel</button>
+                    </div>
+                </fieldset>
+            </form>
         </div>
     </div>
 </div>
+
+<link href="../vendors/datepicker.css" rel="stylesheet" media="screen">
+<link href="../vendors/uniform.default.css" rel="stylesheet" media="screen">
+<link href="../vendors/chosen.min.css" rel="stylesheet" media="screen">
+<link href="../vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet" media="screen">
+<script src="../vendors/jquery.uniform.min.js"></script>
+<script src="../vendors/chosen.jquery.min.js"></script>
+<script src="../vendors/bootstrap-datepicker.js"></script>
+<script src="../vendors/wysiwyg/wysihtml5-0.3.0.js"></script>
+<script src="../vendors/wysiwyg/bootstrap-wysihtml5.js"></script>
+<script src="../vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
+<script type="text/javascript" src="../vendors/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="../assets/form-validation.js"></script>
+
+<script>
+    jQuery(document).ready(function() {
+        FormValidation.init();
+    });
+</script>
+
+
+<script language='javascript'>
+    $(document).ready(function(){
+        $("#addUser").modal('hide');
+    });
+</script>

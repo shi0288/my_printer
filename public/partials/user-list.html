@@ -8,7 +8,7 @@
             <div class="span12">
                 <div class="table-toolbar">
                     <div class="btn-group">
-                        <a href='javascript:void(0)'><botton  class='btn btn-success' data-toggle="modal" data-target="#addUser">创建<i class="icon-plus icon-white"></i></botton></a>
+                        <botton  class='btn btn-success' data-toggle="modal" ng-click="addUser()" data-target="#addUser">创建<i class="icon-plus icon-white"></i></botton>
                     </div>
                     <div class="btn-group pull-right">
                         <button data-toggle="dropdown" class="btn dropdown-toggle">Tools <span class="caret"></span></button>
@@ -31,7 +31,7 @@
                     <tr ng-repeat="user in users">
                         <td>{{user.userName}}</td>
                         <td>{{user.passWord}}</td>
-                        <td>管理游戏</td>
+                        <td><button class="btn btn-primary" data-toggle="modal" ng-click="editUser(user)" data-target="#addUser"><i class="icon-pencil icon-white"></i>Edit</button></td>
                     </tr>
                     </tbody>
                 </table>
@@ -64,13 +64,13 @@
                    <div class="control-group">
                        <label class="control-label">用户名<span class="required">*</span></label>
                        <div class="controls">
-                           <input type="text" name="userName" data-required="1" class="span6 m-wrap"/>
+                           <input type="text" ng-model="user.userName" name="userName" data-required="1" class="span6 m-wrap"/>
                        </div>
                    </div>
                    <div class="control-group">
                        <label class="control-label">密码<span class="required">*</span></label>
                        <div class="controls">
-                           <input type="text" name="passWord" data-required="1" class="span6 m-wrap"/>
+                           <input type="text" ng-model="user.passWord" name="passWord" data-required="1" class="span6 m-wrap"/>
                        </div>
                    </div>
                    <div class="form-actions">
