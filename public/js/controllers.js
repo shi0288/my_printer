@@ -4,21 +4,10 @@
 
 var printerControllers = angular.module('printerControllers', []);
 
-
 /*
  *  系统监控
  **/
 printerControllers.controller('systemListCtrl', ['$scope', 'socket',
-    function ($scope, socket) {
-        //发送获取待出票命令
-
-
-    }]);
-
-/*
- *  配置管理
- **/
-printerControllers.controller('configListCtrl', ['$scope', 'socket',
     function ($scope, socket) {
         /*初始化命令**/
         var data = {};
@@ -28,11 +17,30 @@ printerControllers.controller('configListCtrl', ['$scope', 'socket',
         data.cmd = 'terminalList';
         socket.emit('data', data);
 
+
         /*其它命令**/
         //接收终端机列表
         socket.on('terminalList', function (terminals) {
             $scope.terminals = terminals;
         });
+
+        socket.on('statusChange', function (terminal) {
+            console.log(terminal);
+            var _terminal = JSON.parse(terminal);
+            for (var i = 0; i < $scope.terminals.length; i++) {
+                if (_terminal.id == $scope.terminals[i].id && _terminal.status != $scope.terminals[i].status) {
+                    $scope.terminals[i] = _terminal;
+                }
+            }
+        });
+
+        $scope.addTerminal = function () {
+            $scope.terminal = {};
+        };
+        $scope.editTerminal = function (terminal) {
+            $scope.terminal= angular.copy(terminal);
+        };
+
 
     }]);
 
@@ -75,6 +83,7 @@ printerControllers.controller('mainCtrl', ['$scope', 'socket',
         data.cmd = 'queryCatchTicketsStatus';
         socket.emit('data', data);
 
+
         /*其它命令**/
         $scope.catchTicketsStatus = function () {
             data.cmd = 'catchTicketsStatus';
@@ -92,6 +101,7 @@ printerControllers.controller('mainCtrl', ['$scope', 'socket',
         });
         //接收自查询取票状态
         socket.on('queryCatchTicketsStatus', function (data) {
+            console.log(data);
             if (data) {
                 $scope.status = '停止取票';
                 $scope.style = 'btn-danger';
@@ -100,6 +110,4 @@ printerControllers.controller('mainCtrl', ['$scope', 'socket',
                 $scope.style = 'btn-primary';
             }
         });
-
-
     }]);

@@ -7,12 +7,13 @@ var bodyParser = require('body-parser');
 var socketServer = require('./SocketServer.js');
 var db = require('./node_modules/print_util/MongoDBUtil');
 
-var testSource = require('./node_modules/print_source/TestSource');
+var source = require('print_source');
+var testSource = source.testSource;
 
 var WebServer = function () {
 };
 
-WebServer.prototype.start = function () {
+WebServer.prototype.start = function (cb) {
 
     //设置视图
     app.set('views', __dirname + '/views');
@@ -67,14 +68,14 @@ WebServer.prototype.start = function () {
 
     var server = app.listen(3000, function () {
         console.log('Listening on port %d', server.address().port);
-        socketServer.run(server);
+        var io = socketServer.run(server);
         console.log('SocketServer  Run');
+        cb(io);
     });
 };
 
 
 var webServer = new WebServer();
-webServer.start();
 
-testSource.handle();
 
+module.exports = webServer;

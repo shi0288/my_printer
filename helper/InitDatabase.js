@@ -13,7 +13,7 @@ db.open(function (err, db) {
                 db.createCollection('History', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
-                    }
+                    };
                     console.log('已创建History');
                     cb(null);
                 });

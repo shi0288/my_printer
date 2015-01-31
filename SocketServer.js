@@ -41,6 +41,8 @@ io.on('connection', function (socket) {
 
 SocketServer.prototype.run = function (server) {
     io.listen(server);
+    return io;
 }
 
-module.exports = new SocketServer();
+var socketServer = new SocketServer();
+module.exports = socketServer;

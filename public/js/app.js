@@ -6,7 +6,8 @@ var printerApp = angular.module('printerApp', [
     'ngRoute',
     'printerControllers',
     'printerFilters',
-    'printerServices'
+    'printerServices',
+    'printerDirectives'
 ]);
 
 
@@ -16,10 +17,6 @@ printerApp.config(['$routeProvider',
             when('/system', {
                 templateUrl: '../partials/system-list.html',
                 controller: 'systemListCtrl'
-            }).
-            when('/config', {
-                templateUrl: '../partials/config-list.html',
-                controller: 'configListCtrl'
             }).
             when('/user', {
                 templateUrl: '../partials/user-list.html',

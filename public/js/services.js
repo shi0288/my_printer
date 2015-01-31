@@ -4,16 +4,10 @@
 
 var printerServices = angular.module('printerServices', ['ngResource']);
 
-printerServices.factory('Phone', ['$resource',
-    function ($resource) {
-        return $resource('phones/:phoneId.json', {}, {
-            query: {method: 'GET', params: {phoneId: 'phones'}, isArray: true}
-        });
-    }]);
 var socket;
 printerServices.factory('socket', ['$rootScope',
     function ($rootScope) {
-        socket = io.connect('127.0.0.1:3000');
+        socket = io.connect(null);
         //连接Socket,注册身份
         var data = {};
         var cmd = 'login';

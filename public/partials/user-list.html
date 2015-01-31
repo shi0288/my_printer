@@ -28,7 +28,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="user in users">
+                    <tr ng-cloak ng-repeat="user in users">
                         <td>{{user.userName}}</td>
                         <td>{{user.passWord}}</td>
                         <td><button class="btn btn-primary" data-toggle="modal" ng-click="editUser(user)" data-target="#addUser"><i class="icon-pencil icon-white"></i>Edit</button></td>
@@ -83,32 +83,13 @@
    </div>
 </div>
 
-<link href="../vendors/datepicker.css" rel="stylesheet" media="screen">
-<link href="../vendors/uniform.default.css" rel="stylesheet" media="screen">
-<link href="../vendors/chosen.min.css" rel="stylesheet" media="screen">
-<link href="../vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet" media="screen">
-<script src="../vendors/jquery.uniform.min.js"></script>
-<script src="../vendors/chosen.jquery.min.js"></script>
-<script src="../vendors/bootstrap-datepicker.js"></script>
-<script src="../vendors/wysiwyg/wysihtml5-0.3.0.js"></script>
-<script src="../vendors/wysiwyg/bootstrap-wysihtml5.js"></script>
-<script src="../vendors/wizard/jquery.bootstrap.wizard.min.js"></script>
 <script type="text/javascript" src="../vendors/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="../assets/form-validation.js"></script>
 
 <script>
     jQuery(document).ready(function() {
         FormValidation.init();
-    });
-</script>
-
-
-<script language='javascript'>
-    $(document).ready(function(){
-
-
         $("#addUser").modal('hide');
-
     });
-
 </script>
+
