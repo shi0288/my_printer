@@ -26,11 +26,7 @@ var FormValidation = function () {
                     minlength: 2,
                     required: true
                 },
-                terminalCode: {
-                    minlength: 2,
-                    required: true
-                },
-                gameCode: {
+                id: {
                     minlength: 2,
                     required: true
                 },
@@ -77,37 +73,36 @@ var FormValidation = function () {
                 data.bodyNode = bodyNode;
                 var elements = form.getElementsByTagName('input');
                 var tempLength = elements.length;
-                for(var i = 0;i<tempLength;i++)
-                {
-                    if(elements[i].name==''){
-                    }else{
-                        if(elements[i].name=='gameCode'){
+                for (var i = 0; i < tempLength; i++) {
+                    if (elements[i].name == '') {
+                    } else {
+                        if (elements[i].name == 'gameCode') {
                             bodyNode.gameCode = {};
-                            var game = {
-                                'T01': '大乐透',
-                                'T02': '七星彩',
-                                'T03': '排列3',
-                                'T04': '排列5',
-                                'T05': '11选5',
-                                'T06': '快赢481',
-                                'T51': '竞彩',
-                                'T53': '胜负彩',
-                                'T54': '四场进球',
-                                'T55': '六场半全场'
-                            };
                             var arr = elements[i].value.split(',');
                             for (var j = 0; j < arr.length; j++) {
-                                console.log(arr[j]);
-                                console.log(game[arr[j]]);
                                 bodyNode.gameCode[arr[j]] = game[arr[j]];
                             };
-                        }else{
+                        } else {
                             bodyNode[elements[i].name] = elements[i].value;
-                        }
+                        };
                     }
-                }
-                socket.emit('data',data);
-                $("#"+data.cmd).modal('hide');
+                };
+
+                var selecteds = $(".search-choice");
+                if (selecteds.length != 0) {
+                    bodyNode.gameCode = {};
+                    for (var i = 0; i < selecteds.length; i++) {
+                        var name = selecteds[i].getElementsByTagName('span')[0].innerText;
+                        bodyNode.gameCode[getGameCode(name)] = name;
+                    };
+                }else if(data.cmd=='addUser'){
+
+                }else{
+                    $("#" + data.cmd).modal('hide');
+                    return;
+                };
+                socket.emit('data', data);
+                $("#" + data.cmd).modal('hide');
             }
         });
     }
@@ -127,7 +122,13 @@ var FormValidation = function () {
                 scrollTop: pos + (offeset ? offeset : 0)
             }, 'slow');
         }
-
     };
-
 }();
+
+function getGameCode(gameName) {
+    for (var key in game) {
+        if (game[key] == gameName) {
+            return key;
+        }
+    }
+}

@@ -23,9 +23,7 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
         socket.on('terminalList', function (terminals) {
             $scope.terminals = terminals;
         });
-
         socket.on('statusChange', function (terminal) {
-            console.log(terminal);
             var _terminal = JSON.parse(terminal);
             for (var i = 0; i < $scope.terminals.length; i++) {
                 if (_terminal.id == $scope.terminals[i].id && _terminal.status != $scope.terminals[i].status) {
@@ -33,15 +31,17 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
                 }
             }
         });
-
         $scope.addTerminal = function () {
             $scope.terminal = {};
+            $scope.game = game;
+            $scope.door = false;
         };
         $scope.editTerminal = function (terminal) {
+            $scope.game = game;
+            $scope.hadGame=terminal.gameCode;
             $scope.terminal= angular.copy(terminal);
+            $scope.door = true;
         };
-
-
     }]);
 
 /*
