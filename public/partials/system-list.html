@@ -14,19 +14,16 @@
                     <tr>
                         <th>游戏</th>
                         <th>期次</th>
-                        <th>开奖号码</th>
+                        <th>数量</th>
+                        <th>金额</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>11选5</td>
-                        <td>15010771</td>
-                        <td>01,02,03,04,05</td>
-                    </tr>
-                    <tr>
-                        <td>双色球</td>
-                        <td>2014153</td>
-                        <td>01,02,03,04,05,06,07</td>
+                    <tr  ng-cloak   ng-repeat="waitGame in waitQueen">
+                        <td>{{waitGame.value.gameCode}}</td>
+                        <td>{{waitGame.value.termCode}}</td>
+                        <td>{{waitGame.value.count}}</td>
+                        <td>{{waitGame.value.totalMoney}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -116,7 +113,7 @@
 
 
 
-<div id="addTerminal" class="modal fade" tabindex='-1'role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+<div id="addTerminal" class="modal fade"  tabindex='-1'role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
     <div class="modal-dialog">
         <div class="modal-header">
             <button class="close" type='button' data-dismiss='modal'>
@@ -126,7 +123,7 @@
             <h4 id="myModalLabel" class="modal-title">创建终端机</h4>
         </div>
         <div class="modal-body">
-            <form action="addTerminal" id="form_sample_1" class="form-horizontal">
+            <form action="addTerminal" id="form_sample_1" class="form-horizontal" style="height: 500px;">
                 <fieldset>
                     <div class="alert alert-error hide">
                         <button class="close" data-dismiss="alert"></button>
@@ -165,13 +162,6 @@
                             </select>
                         </div>
                     </div>
-
-                    <!--<div class="control-group">-->
-                        <!--<label class="control-label">游戏种类<span class="required">*</span></label>-->
-                        <!--<div class="controls">-->
-                            <!--<input type="text" name="gameCode" ng-model="terminal.gameCode"  data-required="1" class="span6 m-wrap"/>-->
-                        <!--</div>-->
-                    <!--</div>-->
                     <div class="form-actions">
                         <button type="submit" class="btn btn-primary">确认提交</button>
                         <button type="button" class="btn"  data-dismiss='modal'>Cancel</button>

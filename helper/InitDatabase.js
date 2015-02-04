@@ -1,16 +1,16 @@
-var db = require('../node_modules/print_util/MongoDBUtil');
+var util = require('print_util');
+var mongoDBUtil = util.mongoDBUtil;
 var async = require('async');
 
 console.log('开始执行数据库初始化脚本');
-db.close();
-db.open(function (err, db) {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log('已打开链接');
         async.waterfall([
             function(cb){
-                db.createCollection('History', {safe: true}, function (err, collection) {
+                mongoDBUtil.init(function(err){
+                    cb(err);
+                });
+            },
+            function(cb){
+                mongoDBUtil.db.createCollection('History', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     };
@@ -18,7 +18,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('T05Numbers', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('T05Numbers', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -26,7 +26,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('T06Numbers', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('T06Numbers', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -34,7 +34,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('TerminalPrintSuccess', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('TerminalPrintSuccess', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -42,7 +42,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('failTicket', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('failTicket', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -50,7 +50,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('orders', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('orders', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -58,7 +58,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('terminal', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('terminal', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -66,7 +66,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('waitTerminalTicket', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('waitTerminalTicket', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -74,7 +74,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('wrongTicket', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('wrongTicket', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -82,7 +82,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('test', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('test', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -90,7 +90,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('localTerm', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('localTerm', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -98,7 +98,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('WinNumbers', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('WinNumbers', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     }
@@ -106,7 +106,7 @@ db.open(function (err, db) {
                     cb(null);
                 });
             },function(cb){
-                db.createCollection('customer', {safe: true}, function (err, collection) {
+                mongoDBUtil.db.createCollection('customer', {safe: true}, function (err, collection) {
                     if (err) {
                         cb(err);
                     };
@@ -128,5 +128,3 @@ db.open(function (err, db) {
             }
 
         });
-    }
-});

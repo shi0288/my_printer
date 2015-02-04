@@ -5,10 +5,11 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var socketServer = require('./SocketServer.js');
-var db = require('./node_modules/print_util/MongoDBUtil');
+var util = require('print_util');
+var mongoDBUtil = util.mongoDBUtil;
 
-var source = require('print_source');
-var testSource = source.testSource;
+var memory = require('print_memory');
+var webIo = memory.webIo;
 
 var WebServer = function () {
 };
@@ -46,20 +47,22 @@ WebServer.prototype.start = function (cb) {
     });
 
     app.post('/login.htm', function (req, res) {
-        var body={};
-        var userName=req.body.userName;
-        var passWord=req.body.passWord;
-        if(userName!=undefined&&passWord!=undefined){
-            body.userName=userName;
-            body.passWord=passWord;
-        };
+        var body = {};
+        var userName = req.body.userName;
+        var passWord = req.body.passWord;
+        if (userName != undefined && passWord != undefined) {
+            body.userName = userName;
+            body.passWord = passWord;
+        }
+        ;
         console.log(JSON.stringify(body));
-        db.collection('customer', {safe: true}, function (err, collection) {
+        mongoDBUtil.db.collection('customer', {safe: true}, function (err, collection) {
             collection.find(body).toArray(function (err, datas) {
-                if(datas.length == 1){
-                    var ngUserName='userName='+'\''+userName+'\'';
+                console.log(datas);
+                if (datas.length == 1) {
+                    var ngUserName = 'userName=' + '\'' + userName + '\'';
                     res.render('app/index', { userName: userName, ngUserName: ngUserName});
-                }else{
+                } else {
                     res.render('login', { title: 'Hey', message: '登录失败'});
                 }
             })
@@ -70,6 +73,7 @@ WebServer.prototype.start = function (cb) {
         console.log('Listening on port %d', server.address().port);
         var io = socketServer.run(server);
         console.log('SocketServer  Run');
+        webIo.init(io);
         cb(io);
     });
 };

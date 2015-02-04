@@ -14,8 +14,13 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
         var bodyNode = {};
         data.bodyNode = bodyNode;
         //初始化终端机列表状态
-        data.cmd = 'terminalList';
-        socket.emit('data', data);
+        var terminalListData=angular.copy(data)
+        terminalListData.cmd = 'terminalList';
+        socket.emit('data', terminalListData);
+        //初始化等待队列
+        var waitQueenData=angular.copy(data)
+        waitQueenData.cmd = 'waitQueen';
+        socket.emit('data', waitQueenData);
 
 
         /*其它命令**/
@@ -30,6 +35,9 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
                     $scope.terminals[i] = _terminal;
                 }
             }
+        });
+        socket.on('waitQueen', function (waitQueen) {
+            $scope.waitQueen = waitQueen;
         });
         $scope.addTerminal = function () {
             $scope.terminal = {};
@@ -54,9 +62,9 @@ printerControllers.controller('userListCtrl', ['$scope', 'socket',
         var bodyNode = {};
         data.bodyNode = bodyNode;
         //初始化客户列表
-        data.cmd = 'userList';
-        socket.emit('data', data);
-
+        var userListData=angular.copy(data)
+        userListData.cmd = 'userList';
+        socket.emit('data', userListData);
         /*其它命令**/
         //接收用户列表
         socket.on('userList', function (users) {
@@ -80,14 +88,15 @@ printerControllers.controller('mainCtrl', ['$scope', 'socket',
         var bodyNode = {};
         data.bodyNode = bodyNode;
         //初始化取票状态
-        data.cmd = 'queryCatchTicketsStatus';
-        socket.emit('data', data);
-
+        var queryCatchTicketsStatusData=angular.copy(data)
+        queryCatchTicketsStatusData.cmd = 'queryCatchTicketsStatus';
+        socket.emit('data', queryCatchTicketsStatusData);
 
         /*其它命令**/
         $scope.catchTicketsStatus = function () {
-            data.cmd = 'catchTicketsStatus';
-            socket.emit('data', data);
+            var catchTicketsStatusData=angular.copy(data)
+            catchTicketsStatusData.cmd = 'catchTicketsStatus';
+            socket.emit('data', catchTicketsStatusData);
         };
         //接收公共取票状态
         socket.on('catchTicketsStatus', function (data) {
