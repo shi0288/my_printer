@@ -99,7 +99,7 @@
                     <a href="javascript:void(0)" class="thumbnail" data-toggle="modal" ng-click="editTerminal(terminal)" data-target="#addTerminal" >
                         <img  style="width: 100px; height: 100px;" ng-src="{{terminal.status|consStatus}}">
                         <div class="popover fade bottom in" style="top: 104px; left: 30px; display: block;">
-                            <h3 class="popover-title">终端机编号: {{terminal.id}}</h3>
+                            <h3 class="popover-title">终端机编号: <font color="red">{{terminal.id}}</font></h3>
                             <div class="popover-content">{{terminal.status}}</div>
                         </div>
                     </a>

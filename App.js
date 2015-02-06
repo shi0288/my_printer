@@ -65,7 +65,7 @@ async.waterfall([function (cb) {
                         curBufLen = 0;
                     } else {
                         var bodyNodeBuf = new Buffer(dataBufLen + packageBufLen - msgParam.headBufLen);
-                        dataBuf.copy(bodyNodeBuf, 0, msgParam.headBufLen, dataBufLen);
+                        dataBuf.copy(bodyNodeBuf, 0, msgParam.headBufLen, dataBufLen+packageBufLen);
                         //解析bodyNode
                         var bodyNode = dataUtil.handleForBodyNode(headNode, bodyNodeBuf);
                         //可以分流处理不同接口了
@@ -114,7 +114,7 @@ async.waterfall([function (cb) {
 }], function (err, data) {
     console.log('TCP Server listening on ' + HOST + ':' + PORT);
     console.log(data);
-    //termUtil.run();
+    ticketControl.run();
 });
 
 
