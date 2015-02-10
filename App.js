@@ -10,9 +10,10 @@ var cons = require('print_constants');
 var msgParam = cons.msgParam;
 
 var webServer = require('./WebServer.js');
-var control= require('print_control')
+var control= require('print_control');
 var TerminalControl =control.terminalControl;
 var ticketControl=control.ticketControl;
+var pageControl=control.pageControl;
 
 var HOST = '127.0.0.1';
 var PORT = 16777;
@@ -115,6 +116,7 @@ async.waterfall([function (cb) {
     console.log('TCP Server listening on ' + HOST + ':' + PORT);
     console.log(data);
     ticketControl.run();
+    pageControl.run();
 });
 
 

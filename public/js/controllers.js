@@ -14,11 +14,11 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
         var bodyNode = {};
         data.bodyNode = bodyNode;
         //初始化终端机列表状态
-        var terminalListData=angular.copy(data)
+        var terminalListData = angular.copy(data)
         terminalListData.cmd = 'terminalList';
         socket.emit('data', terminalListData);
         //初始化等待队列
-        var waitQueenData=angular.copy(data)
+        var waitQueenData = angular.copy(data);
         waitQueenData.cmd = 'waitQueen';
         socket.emit('data', waitQueenData);
 
@@ -28,10 +28,26 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
         socket.on('terminalList', function (terminals) {
             $scope.terminals = terminals;
         });
+
+
+        socket.on('addTerminal', function (terminal) {
+            $scope.terminals[$scope.terminals.length]=terminal;
+        });
+
+        socket.on('editTerminal', function (_terminal) {
+            for (var i = 0; i < $scope.terminals.length; i++) {
+                if (_terminal.id == $scope.terminals[i].id) {
+                    $scope.terminals[i] = _terminal;
+                }
+            }
+        });
+
         socket.on('statusChange', function (terminal) {
             var _terminal = JSON.parse(terminal);
             for (var i = 0; i < $scope.terminals.length; i++) {
-                if (_terminal.id == $scope.terminals[i].id && _terminal.status != $scope.terminals[i].status) {
+                if (_terminal.id == $scope.terminals[i].id  && _terminal.status != $scope.terminals[i].status) {
+                    _terminal.waitCount=$scope.terminals[i].waitCount;
+                    _terminal.succCount=$scope.terminals[i].succCount;
                     $scope.terminals[i] = _terminal;
                 }
             }
@@ -46,10 +62,20 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
         };
         $scope.editTerminal = function (terminal) {
             $scope.game = game;
-            $scope.hadGame=terminal.gameCode;
-            $scope.terminal= angular.copy(terminal);
+            $scope.hadGame = terminal.gameCode;
+            $scope.terminal = angular.copy(terminal);
             $scope.door = true;
         };
+        socket.on('terminalCount', function (body) {
+            for (var i = 0; i < $scope.terminals.length; i++) {
+                if (body.terminalId == $scope.terminals[i].id) {
+                    $scope.terminals[i].waitCount = body.waitCount;
+                    $scope.terminals[i].succCount = body.succCount;
+                }
+            }
+        });
+
+
     }]);
 
 /*
@@ -62,7 +88,7 @@ printerControllers.controller('userListCtrl', ['$scope', 'socket',
         var bodyNode = {};
         data.bodyNode = bodyNode;
         //初始化客户列表
-        var userListData=angular.copy(data)
+        var userListData = angular.copy(data)
         userListData.cmd = 'userList';
         socket.emit('data', userListData);
         /*其它命令**/
@@ -74,7 +100,7 @@ printerControllers.controller('userListCtrl', ['$scope', 'socket',
             $scope.user = {};
         };
         $scope.editUser = function (user) {
-            $scope.user= angular.copy(user);
+            $scope.user = angular.copy(user);
         };
     }]);
 
@@ -88,13 +114,13 @@ printerControllers.controller('mainCtrl', ['$scope', 'socket',
         var bodyNode = {};
         data.bodyNode = bodyNode;
         //初始化取票状态
-        var queryCatchTicketsStatusData=angular.copy(data)
+        var queryCatchTicketsStatusData = angular.copy(data)
         queryCatchTicketsStatusData.cmd = 'queryCatchTicketsStatus';
         socket.emit('data', queryCatchTicketsStatusData);
 
         /*其它命令**/
         $scope.catchTicketsStatus = function () {
-            var catchTicketsStatusData=angular.copy(data)
+            var catchTicketsStatusData = angular.copy(data)
             catchTicketsStatusData.cmd = 'catchTicketsStatus';
             socket.emit('data', catchTicketsStatusData);
         };
@@ -110,7 +136,6 @@ printerControllers.controller('mainCtrl', ['$scope', 'socket',
         });
         //接收自查询取票状态
         socket.on('queryCatchTicketsStatus', function (data) {
-            console.log(data);
             if (data) {
                 $scope.status = '停止取票';
                 $scope.style = 'btn-danger';
