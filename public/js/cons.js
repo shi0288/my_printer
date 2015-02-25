@@ -33,7 +33,7 @@ var statusList = {
 
 function getStatusCode(statusDes) {
     for (var key in statusList) {
-        if (game[key] == statusDes) {
+        if (statusList[key] == statusDes) {
             return key;
         }
     }

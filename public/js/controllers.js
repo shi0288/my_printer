@@ -45,6 +45,7 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
 
         socket.on('statusChange', function (terminal) {
             var _terminal = JSON.parse(terminal);
+            console.log(_terminal);
             for (var i = 0; i < $scope.terminals.length; i++) {
                 if (_terminal.id == $scope.terminals[i].id  && _terminal.status != $scope.terminals[i].status) {
                     _terminal.waitCount=$scope.terminals[i].waitCount;
@@ -143,4 +144,14 @@ printerControllers.controller('mainCtrl', ['$scope', 'socket',
                 $scope.style = 'btn-primary';
             }
         });
+    }]);
+
+
+
+/*
+ *  Ticket页控制
+ **/
+printerControllers.controller('ticketListCtrl', ['$scope', 'socket',
+    function ($scope, socket) {
+
     }]);
