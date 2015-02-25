@@ -87,15 +87,23 @@ var FormValidation = function () {
                         };
                     }
                 };
-
                 var selecteds = $(".search-choice");
+                var singleSelect = $(".chzn-single");
+                if(singleSelect.length != 0){
+                    bodyNode.status = {};
+                    for (var i = 0; i < singleSelect.length; i++) {
+                        var name = selecteds[i].getElementsByTagName('span')[0].innerText;
+                        bodyNode.status[getStatusCode(name)] = name;
+                    };
+                };
                 if (selecteds.length != 0) {
                     bodyNode.gameCode = {};
                     for (var i = 0; i < selecteds.length; i++) {
                         var name = selecteds[i].getElementsByTagName('span')[0].innerText;
                         bodyNode.gameCode[getGameCode(name)] = name;
                     };
-                }else if(data.cmd=='addUser'){
+                }
+                else if(data.cmd=='addUser'){
 
                 }else{
                     $("#" + data.cmd).modal('hide');
@@ -125,10 +133,3 @@ var FormValidation = function () {
     };
 }();
 
-function getGameCode(gameName) {
-    for (var key in game) {
-        if (game[key] == gameName) {
-            return key;
-        }
-    }
-}

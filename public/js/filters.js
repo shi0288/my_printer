@@ -39,3 +39,34 @@ printerFilters.filter('consStatus', [
         };
     }]);
 
+
+
+printerFilters.filter('consStatusDes', [
+    function() {
+        return function(input) {
+            var res;
+            switch(input)
+            {
+                case 1000:
+                    res='等待出票';
+                    break;
+                case 1100:
+                    res='查询';
+                    break;
+                case 1200:
+                    res='兑奖';
+                    break;
+                case 1300:
+                    res='打印';
+                    break;
+                case 1900:
+                    res='离线';
+                    break;
+                default:
+                    res='出错';
+            }
+            return res;
+        };
+    }]);
+
+

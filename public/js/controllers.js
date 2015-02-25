@@ -16,6 +16,7 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
         //初始化终端机列表状态
         var terminalListData = angular.copy(data)
         terminalListData.cmd = 'terminalList';
+        //terminalListData
         socket.emit('data', terminalListData);
         //初始化等待队列
         var waitQueenData = angular.copy(data);
@@ -62,6 +63,7 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
         };
         $scope.editTerminal = function (terminal) {
             $scope.game = game;
+            $scope.statusList = statusList;
             $scope.hadGame = terminal.gameCode;
             $scope.terminal = angular.copy(terminal);
             $scope.door = true;
@@ -74,8 +76,6 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
                 }
             }
         });
-
-
     }]);
 
 /*
@@ -117,7 +117,6 @@ printerControllers.controller('mainCtrl', ['$scope', 'socket',
         var queryCatchTicketsStatusData = angular.copy(data)
         queryCatchTicketsStatusData.cmd = 'queryCatchTicketsStatus';
         socket.emit('data', queryCatchTicketsStatusData);
-
         /*其它命令**/
         $scope.catchTicketsStatus = function () {
             var catchTicketsStatusData = angular.copy(data)
