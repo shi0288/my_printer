@@ -153,5 +153,20 @@ printerControllers.controller('mainCtrl', ['$scope', 'socket',
  **/
 printerControllers.controller('ticketListCtrl', ['$scope', 'socket',
     function ($scope, socket) {
+        /*初始化命令**/
+        var data = {};
+        var bodyNode = {};
+        data.bodyNode = bodyNode;
+        //初始化成功票据
+        var querySuccessTicketsData = angular.copy(data)
+        querySuccessTicketsData.cmd = 'querySuccessTickets';
+        socket.emit('data', querySuccessTicketsData);
+
+        /*其它命令**/
+        //接收成功票据列表
+        socket.on('querySuccessTickets', function (data) {
+
+        });
+
 
     }]);
