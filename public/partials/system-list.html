@@ -18,10 +18,10 @@
                     </thead>
                     <tbody>
                     <tr  ng-cloak   ng-repeat="waitGame in waitQueen">
-                        <td>{{waitGame.value.gameCode}}</td>
+                        <td>{{waitGame.value.gameCode | consGameCodeDes}}</td>
                         <td>{{waitGame.value.termCode}}</td>
                         <td>{{waitGame.value.count}}</td>
-                        <td>{{waitGame.value.totalMoney}}</td>
+                        <td>{{waitGame.value.totalMoney/100}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -69,7 +69,6 @@
     </div>
 
 </div>
-
 
 <style>
     .ulList{list-style: none;display: block;margin:0;}
