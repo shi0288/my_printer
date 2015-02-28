@@ -60,6 +60,7 @@ printerControllers.controller('systemListCtrl', ['$scope', 'socket',
         $scope.addTerminal = function () {
             $scope.terminal = {};
             $scope.game = game;
+            $scope.statusList = statusList;
             $scope.door = false;
         };
         $scope.editTerminal = function (terminal) {
@@ -165,7 +166,6 @@ printerControllers.controller('ticketListCtrl', ['$scope', 'socket','$window',
         }
         querySuccessTicketsData.cmd = 'querySuccessTickets';
         socket.emit('data', querySuccessTicketsData);
-
         /*其它命令**/
         //接收成功票据列表
         socket.on('querySuccessTickets', function (backNode) {
@@ -212,6 +212,4 @@ printerControllers.controller('ticketListCtrl', ['$scope', 'socket','$window',
         socket.on('printTicket', function (result) {
             $window.alert(result);
         });
-
-
     }]);
